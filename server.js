@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Iniciar servidor
-const port = 55080;
+const port = process.env.PORT || 3000;  // Usa el puerto de Azure o 3000 en local
 app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
+    console.log(`Servidor corriendo en el puerto ${port}`);
 });
