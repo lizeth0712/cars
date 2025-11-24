@@ -1,0 +1,35 @@
+trigger:
+  - main
+
+pool:
+  name: Default
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Instalar Node.js'
+    inputs:
+      versionSpec: '18.x'
+
+  - script: |
+      npm install
+      npm run build || echo "No hay script build, continuando..."
+    displayName: 'Instalar dependencias y construir app'
+
+  - task: ArchiveFiles@2
+    displayName: 'Empaquetar aplicación en ZIP'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+      replaceExistingArchive: true
+
+  - task: AzureWebApp@1
+    displayName: 'Desplegar en Azure Web App'
+    inputs:
+      azureSubscription: '0933e55c-b4f3-4b20-90e6-ca24974cda06'
+      appType: 'webAppLinux'
+      appName: 'applizeth2'
+      runtimeStack: 'NODE|18LTS'
+      package: '$(Build.ArtifactStagingDirectory)/app.zip'
+      startUpCommand: 'npm start'
