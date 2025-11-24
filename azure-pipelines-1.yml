@@ -21,4 +21,4 @@ steps:
       azureSubscription: '4c7e4180-802d-49a7-afa5-193861c2b2d6'
       appType: 'webAppLinux'
       appName: 'applizeth2'
-      package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
